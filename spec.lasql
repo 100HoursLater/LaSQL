@@ -1,0 +1,86 @@
+/*LaSQL Spec*/
+
+create DATABASE /*Identifier*/;
+
+/*for the sake of example we will create a database called company*/
+
+create DATABASE company;
+
+use company;
+var WhereIsStore : ""; //string
+query DATABASE company : [
+    query=(list); /*query command for the list of whats in the database*/
+    return list; /*returns the lists results*/
+].out[WhereIsStore]; // this now pipes the queries results into the var WhereIsStore
+
+alter DATABASE company : [
+    instruct=(
+        list[row: 1 | column: 2];
+        in 1 = (value()=:('iou214657892'));
+    );
+    return list;
+]; // alters the database
+
+drop DATABASE company; // deletes the database
+
+// creating data
+
+
+alter DATABASE company : [
+    instruct=(
+        create TABLE employees=(
+            employee_id : int,
+            firstname : char_w[50],
+            lastname : char_w[50],
+            department : char_w[50],
+            salary : decimal(10,5)
+        );
+    );
+];
+
+// inserting
+
+insert into company::employees ?(employee_id,firstname,lastname,department,salary)? = [
+ VALUES(
+    {(1),('John'),('Doe'),('HR'),(100000.00)},
+    {(2),('Jane'),('Doe'),('CFO'),(5000000.00)};
+    );
+];
+
+// alter tables
+alter TABLE company::employees = [
+    add column {new_column} : int;
+];
+
+drop TABLE company::employees; // deletes the table
+
+query from company::employees where salary > 10.00; // retrieves results in which the salary is more than 10.00
+
+query from company::employees; // retrieves every result inside of table employees
+
+update company::employees = [
+    where company::employees.{row(1) = value(1)} = [
+     set company::employees.{row(5)} = (value() = (70.00));
+    ];
+];
+
+delete from company::employees = [
+ where company::employees.{row(1) = value(5)};
+];
+
+if {company::employees.{row(5)} > 50.0 AND employees::employees.{row(1)} == value(1)} = {
+    PRINT("HELLO JOHN!");
+} else if {company::employees.{row(5)} > 50.0 AND employees::employees.{row(1)} == value(2)} = {
+    PRINT("HELLO JANE!");
+};
+
+
+
+
+
+
+
+
+
+
+
