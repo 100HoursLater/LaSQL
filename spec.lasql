@@ -59,8 +59,8 @@ query from company::employees where salary > 10.00; // retrieves results in whic
 query from company::employees; // retrieves every result inside of table employees
 
 update company::employees = [
-    where company::employees.{row(1) = value(1)} = [
-     set company::employees.{row(5)} = (value() = (70.00));
+    where company::employees.{column(1) = value(1)} = [
+     set company::employees.{column(5)} = (value() = (70.00));
     ];
 ];
 
@@ -68,9 +68,9 @@ delete from company::employees = [
  where company::employees.{row(1) = value(5)};
 ];
 
-if {company::employees.{row(5)} > 50.0 AND employees::employees.{row(1)} == value(1)} = {
+if {company::employees.{column(5)} > 50.0 AND employees::employees.{column(1)} == value(1)} = {
     PRINT("HELLO JOHN!");
-} else if {company::employees.{row(5)} > 50.0 AND employees::employees.{row(1)} == value(2)} = {
+} else if {company::employees.{column(5)} > 50.0 AND employees::employees.{column(1)} == value(2)} = {
     PRINT("HELLO JANE!");
 };
 
